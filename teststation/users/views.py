@@ -1,39 +1,36 @@
-from django.shortcuts import render
-from django.views import View
-from django.contrib.auth import authenticate, login, logout
-from users import forms as dj_forms
-from django.http import JsonResponse
+from rest_framework import generics, status
+from django.contrib.auth import login
+from rest_framework.response import Response
+from users.forms import LoginSerializer
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
-# Create your views here.
-
-class Login(View):
+@method_decorator(csrf_exempt, name='dispatch')
+class Login(generics.GenericAPIView):
     """
-    This View Handles Authenticating the User
-    
-    args: email: user email, password: user password
-    
-    response: Success message
-    """
-    def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return JsonResponse({"success":True})
+    USER LOGIN VIEW
 
-        form = dj_forms.LoginForm()
-        context = {"form": form}
-        return render(request, context=context)
+    REQUEST TYPE: POST
+
+    PARAMETER : data = {
+        'email': 'email',
+        'password': 'password',
+    }
+
+    POST REQUEST: http://127.0.0.1:8000/apis/login/
+    DATA: {'email': 'email', 'password': 'password'}
+
+    RESPONSE: {
+        "Success": True
+    }
+
+    STATUS_CODE: HTTP_200_OK
+    """
+    serializer_class = LoginSerializer
 
     def post(self, request, *args, **kwargs):
-        form = dj_forms.LoginForm(data=request.POST)
-        if form.is_valid():
-            if form.user_cache is not None:
-                user = form.user_cache
-                if user.is_active:
-                    login(request, user)
-                    return JsonResponse({"success": True})
-                else:
-                    return JsonResponse({"success": False, "error": "User has been deactivated"})
-            else:
-                return JsonResponse({"success": False, "error": "Username or password is incorrect"})
-        else:
-            # Form validation failed
-            return JsonResponse({"success": False, "error": "Username or password is incorrect"})
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        login(request, user)
+        return Response({'Success': True}, status=status.HTTP_200_OK)
