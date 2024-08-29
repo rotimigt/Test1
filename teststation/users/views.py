@@ -7,6 +7,13 @@ from django.http import JsonResponse
 # Create your views here.
 
 class Login(View):
+    """
+    This View Handles Authenticating the User
+    
+    args: email: user email, password: user password
+    
+    response: Success message
+    """
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return JsonResponse({"success":True})

@@ -9,6 +9,15 @@ from .serializers import ScheduleSerializer
 
 
 class ScheduleListView(ListAPIView):
+    """
+    This API/View Lists All Save Schedule
+    
+    Request: GET
+    
+    ARGS: 
+    
+    Response: Json Response 
+    """
     queryset = Schedules.objects.all()    
     permission_classes = [IsAuthenticated]
     serializer_class = ScheduleSerializer

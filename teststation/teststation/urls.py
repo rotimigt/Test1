@@ -17,9 +17,30 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import include
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+from django.conf import settings
+from rest_framework import permissions
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Teststation APIs",
+        default_version='v1',
+        description="Frontend skillset test",
+        terms_of_service="https://teststation/policies/terms/",
+        contact=openapi.Contact(email="rotimi.gt@anamo.io"),
+        license=openapi.License(name="Teststation License"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('users.urls')),
     path('', include('features.urls')),
+    path('', schema_view.with_ui('swagger', cache_timeout=5), name='schema-swagger-ui'),
+    path('api/api.json/', schema_view.without_ui(cache_timeout=5), name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=5), name='schema-redoc'),
 ]
