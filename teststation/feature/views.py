@@ -10,7 +10,7 @@ from .serializers import ScheduleSerializer
 
 class ScheduleListView(ListAPIView):
     """
-    This API/View Lists All Save Schedule
+    This API/View Lists All Save Schedule.(user must be authenticated to consume this API)
     
     Request: GET
     
@@ -23,6 +23,6 @@ class ScheduleListView(ListAPIView):
     serializer_class = ScheduleSerializer
     
     def get_queryset(self):
-        return self.queryset
+        return Schedules.objects.all()
     
     
