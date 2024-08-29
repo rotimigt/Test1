@@ -1,46 +1,76 @@
-const form = document.querySelector('.form')
-const email = document.querySelector('.email-input')
+// import * as _ from '../utils';
+
+const form = document.querySelector('.form');
+const email = document.querySelector('.email-input');
 const result = document.querySelector('.result');
 const togglePassword = document.querySelector('.toggle-password-icon');
-const passwordInput = document.querySelector('.password-input')
+const passwordInput = document.querySelector('.password-input');
 const emailError = document.querySelector('.error-message');
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-form.onclick = function (e) {
-    console.log(e)
-    e.preventDefault();
-};
 
 function validateEmail(email) {
-    console.log(email)
     const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return email.match(emailPattern);
   }
 
   // Function to validate input and update result
 function validate() {
+
 const emailInput = email.value
       result.textContent = '';
 
     if (validateEmail(emailInput)) {
-      result.textContent = 'Email is valid.';
-        result.style.color = 'green';
-        console.log('validd')
-    } else {
+      result.textContent = '';
+    }
+    else {
       result.textContent =  'Email is invalid.';
         result.style.color = 'black';
-        console.log('invalid')
     }
   }
 
-  function clearEmailError() {
-    result.textContent = ''; // Clear the error message
+
+function togglePasswordVisibility() {
+
+    if (passwordInput.type === 'password') {
+    togglePassword.setAttribute('src', "./assets/icons/view.svg")
+      passwordInput.type = 'text';
+        togglePassword.title = 'Hide Password'; // Update title
+    }
+    else {
+        passwordInput.type = 'password';
+    togglePassword.setAttribute('src', "./assets/icons/hide.svg")
+       togglePassword.title = 'Show Password'; // Update title
+    }
   }
 
 
+function handleSubmit(e) {
+    e.preventDefault();
+    const emailInput = email.value
+    const password = passwordInput.value;
 
-  // Attach the validate function to the input event
-  document.getElementById('email').addEventListener('input', validate);
-document.getElementById('email').addEventListener('change', validate);
+    if (!validateEmail(emailInput)) {
+        result.textContent = 'Please enter a valid email.';
+        result.style.color = 'red';
+        return false;
+      }
   
+      if (password.length < 8) {
+        result.textContent = 'Password must be at least 8 characters long.';
+        result.style.color = 'red';
+        return false;
+      }
+    
+    //Once form has been validated , then submit
+}
 
+
+// Attach the validate function to the input event
+email.addEventListener('input', validate);
+email.addEventListener('change', validate);
+
+// Toggle password visibility
+togglePassword.addEventListener('click', togglePasswordVisibility);
+
+//Submit form
+form.addEventListener('submit',handleSubmit)

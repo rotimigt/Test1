@@ -23,7 +23,7 @@ body {
 .form {
     display: flex;
     flex-direction: column;
-    background-color: red;
+    background-color: grey;
     height: 20rem;
     width: 90%;
     padding: 1.5rem;
@@ -79,4 +79,12 @@ label {
 
 .password-input {
     padding-right: 28px;
+}
+
+.result { 
+    height: .5rem;
+    padding: .5rem 0;
+}
+input{ 
+    outline: none;
 }
