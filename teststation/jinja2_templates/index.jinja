@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{ static('css/styles.css') }}">
+    <title>{{ title }}</title>
+</head>
+<body>
+
+    <div class="login-form">
+        <h1>Teststation Login</h1>
+        <form id="loginForm" action="/login/" method="post">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+            <input type="email" id="email" name="email" placeholder="Enter Email Address" required>
+
+            <input type="password" id="password" name="password" placeholder="Enter password" required>
+
+            <button>Submit</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            try {
+                const response = await fetch('/login/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken,
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    alert('Login successful!'); 
+                    window.location.href = 'http://127.0.0.1:8000/schedule-view';
+                } else {
+                    alert('Login failed!');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while submitting the form.');
+            }
+        });
+    </script>
+</body>
+</html>
