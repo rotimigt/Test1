@@ -6,7 +6,8 @@ const result = document.querySelector('.result');
 const togglePassword = document.querySelector('.toggle-password-icon');
 const passwordInput = document.querySelector('.password-input');
 const errorMsg = document.querySelector('.error-message');
-
+const btnMenu = document.getElementsByClassName("btn-menu");
+const body = document.body
 
 // Function to validate input and update result
 function validate() {
@@ -20,7 +21,7 @@ function validate() {
 
     else {
         result.textContent = 'Email is invalid.';
-        result.style.color = 'black';
+        result.style.color = '#e59e9e';
     }
 }
 
@@ -46,7 +47,7 @@ function handleSubmit(e) {
 
     if (!_.validateEmail(emailInput)) {
         result.textContent = 'Please enter a valid email.';
-        result.style.color = 'red';
+        result.style.color = '#e59e9e';
         return false;
     }
 
@@ -54,7 +55,7 @@ function handleSubmit(e) {
 
     if (passwordFeedback.length > 0) { 
         errorMsg.textContent = `${passwordFeedback[0]}`;
-        errorMsg.style.color = 'red';
+        errorMsg.style.color = '#e59e9e';
         return false;
     }
 
@@ -66,6 +67,14 @@ function clearError() {
     errorMsg.textContent = ''
 }
 
+
+
+
+for (var i = 0; i < btnMenu.length; i++) {
+    btnMenu[i].addEventListener('click', function () {
+        body.classList.toggle('menu-open');
+    });
+}
 
 // Attach the validate function to the input event
 email.addEventListener('input', validate);
