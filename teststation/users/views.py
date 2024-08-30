@@ -4,6 +4,10 @@ from rest_framework.response import Response
 from users.forms import LoginSerializer
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from django.template import engines
+from django.http import HttpResponse
+from django.middleware.csrf import get_token
+from django.template.loader import get_template
 
 @method_decorator(csrf_exempt, name='dispatch')
 class Login(generics.GenericAPIView):
@@ -34,3 +38,13 @@ class Login(generics.GenericAPIView):
         user = serializer.validated_data['user']
         login(request, user)
         return Response({'Success': True}, status=status.HTTP_200_OK)
+
+
+def loginForm(request):
+    template = get_template('index.jinja')
+    csrf_token = get_token(request)
+    context = {
+        'title': 'Login Form',
+        'csrf_token': csrf_token,
+    }
+    return HttpResponse(template.render(context, request))

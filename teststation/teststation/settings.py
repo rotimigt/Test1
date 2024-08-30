@@ -70,6 +70,15 @@ TEMPLATES = [
             ],
         },
     },
+    {
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',
+        'DIRS': [BASE_DIR / 'jinja2_templates'],  # Directory for Jinja2 templates
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'environment': 'teststation.jinja2.environment',
+        },
+    },
+
 ]
 
 WSGI_APPLICATION = 'teststation.wsgi.application'
@@ -121,6 +130,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

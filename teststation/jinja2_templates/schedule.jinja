@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{ static('css/styles.css') }}">
+    <title>{{ title }}</title>
+</head>
+<body>
+    {%- if user.is_authenticated %}
+        <div class="table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Task</th>
+                        <th>Name</th>
+                        <th>Descriptions</th>
+                        <th>Created</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <h1>No Available Data</h1>
+    {% endif %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const config = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            };
+
+            const url = 'http://127.0.0.1:8000/schedules';
+
+            fetch(url, config)
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById('table-body');
+                tableBody.innerHTML = '';
+
+                data.forEach(item => {
+                    const row = document.createElement('tr');
+                    
+                    let taskHtml = '';
+                    item.task.forEach(task => {
+                        for (const [_, value] of Object.entries(task)) {
+                            taskHtml += `<span>${value}</span><br>`;
+                        }
+                    });
+
+                    row.innerHTML = `
+                        <td>${item.id}</td>
+                        <td>${taskHtml}</td>
+                        <td>${item.name}</td>
+                        <td>${item.descriptions}</td>
+                        <td>${formatDateString(item.created)}</td>
+                    `;
+
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+        });
+
+        function formatDateString(dateString) {
+            const date = new Date(dateString);
+
+            const options = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                hour12: true,
+            };
+
+            return date.toLocaleString('en-US', options);
+        }
+    </script>
+</body>
+</html>
