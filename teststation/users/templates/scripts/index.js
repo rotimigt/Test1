@@ -1,67 +1,69 @@
-// import * as _ from '../utils';
+import * as _ from './validate/validate.js'
 
 const form = document.querySelector('.form');
 const email = document.querySelector('.email-input');
 const result = document.querySelector('.result');
 const togglePassword = document.querySelector('.toggle-password-icon');
 const passwordInput = document.querySelector('.password-input');
-const emailError = document.querySelector('.error-message');
+const errorMsg = document.querySelector('.error-message');
 
 
-function validateEmail(email) {
-    const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return email.match(emailPattern);
-  }
-
-  // Function to validate input and update result
+// Function to validate input and update result
 function validate() {
 
-const emailInput = email.value
-      result.textContent = '';
+    const emailInput = email.value
+    result.textContent = '';
 
-    if (validateEmail(emailInput)) {
-      result.textContent = '';
+    if (_.validateEmail(emailInput)) {
+        result.textContent = '';
     }
+
     else {
-      result.textContent =  'Email is invalid.';
+        result.textContent = 'Email is invalid.';
         result.style.color = 'black';
     }
-  }
-
+}
 
 function togglePasswordVisibility() {
 
     if (passwordInput.type === 'password') {
-    togglePassword.setAttribute('src', "./assets/icons/view.svg")
-      passwordInput.type = 'text';
-        togglePassword.title = 'Hide Password'; // Update title
+        togglePassword.setAttribute('src', "./assets/icons/view.svg")
+        passwordInput.type = 'text';
+        togglePassword.title = 'Show Password'; // Update title
     }
+
     else {
         passwordInput.type = 'password';
-    togglePassword.setAttribute('src', "./assets/icons/hide.svg")
-       togglePassword.title = 'Show Password'; // Update title
+        togglePassword.setAttribute('src', "./assets/icons/hide.svg")
+        togglePassword.title = 'Hide Password'; // Update title
     }
-  }
-
+}
 
 function handleSubmit(e) {
     e.preventDefault();
     const emailInput = email.value
     const password = passwordInput.value;
 
-    if (!validateEmail(emailInput)) {
+    if (!_.validateEmail(emailInput)) {
         result.textContent = 'Please enter a valid email.';
         result.style.color = 'red';
         return false;
-      }
-  
-      if (password.length < 8) {
-        result.textContent = 'Password must be at least 8 characters long.';
-        result.style.color = 'red';
+    }
+
+    const passwordFeedback = _.validatePassword(password)
+
+    if (passwordFeedback.length > 0) { 
+        errorMsg.textContent = `${passwordFeedback[0]}`;
+        errorMsg.style.color = 'red';
         return false;
-      }
-    
+    }
+
+    console.log('successful')
     //Once form has been validated , then submit
+}
+
+function clearError() { 
+    errorMsg.textContent = ''
 }
 
 
@@ -72,5 +74,7 @@ email.addEventListener('change', validate);
 // Toggle password visibility
 togglePassword.addEventListener('click', togglePasswordVisibility);
 
+
 //Submit form
-form.addEventListener('submit',handleSubmit)
+form.addEventListener('submit', handleSubmit)
+passwordInput.addEventListener('input',clearError)

@@ -55,6 +55,7 @@ label {
     padding: 3px;
     cursor: pointer;
     border-radius: 5px;
+    border: none;
 }
 
 .error-message {
@@ -82,8 +83,10 @@ label {
 }
 
 .result { 
-    height: .5rem;
+    margin: -1.5rem 0 1rem 0;
+    height: 1.5rem;
     padding: .5rem 0;
+    font-size: .8rem;
 }
 input{ 
     outline: none;
