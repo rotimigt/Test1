@@ -1,64 +1,109 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Test-Login</title>
-    <link rel="stylesheet" href="./static/stylesheet.css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/stylesheet.css' %}" />
   </head>
   <body>
     <header class="header">
-      <h2>ANAMO</h2>
+      <img src="{% static 'images/main-logo-1.png' %}" alt="logo" class="home-logo" />
       <button class="btn-menu" type="button">
         <i class="btn-menu__bars" aria-hidden="true"></i>
-    </button>
+      </button>
+      <nav class="navbar">
+        <ul class="nav-links">
+          <li><a href="#">Solutions</a></li>
+          <li><a href="#">Resources</a></li>
+          <li><a href="#">Company</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </nav>
     </header>
+
+    <section class="banner">
+      <h1 class="banner-header">Your worries end here.</h1>
+      <section class="banner-container">
+        <div class="banner-text">
+          <p class="banner-p">Know your weakness.</p>
+          <p>Expose your gaps.</p>
+        </div>
+        <div>
+          <img src="{% static 'images/home-bggg.jpg' %}" alt="" class="banner-img">
+        </div>
+      </section>
+      <button type="button" class="banner-btn">
+        Explore for Free
+      </button>
+    </section>
+
+    <section class="opening-body">
+      <img src="{% static 'images/bg-33.jpg' %}" alt="" class="opening-image" />
+      <button type="button" class="banner-btn btn-2">
+        Explore for Free
+      </button>
+      <h2 class="weakness">The Latest of the Greatest Resources</h2>
+      <p class="opening-text">
+        There’s always something new in the world of tradecraft and cyber threats. For small and medium-sized businesses though, these surprises are never welcome. But you can stay ready when you have a trusted partner at your side. See how Cascade Technologies was notified about the presence of a remote access Trojan and how the Huntress 24/7 security operations team was able to respond before there was any serious impact.
+      </p>
+      <p class="opening-text-link">Explore the Platform</p>
+    </section>
+
     <main class="main">
-     
-      <form action="" class="form">
+      <h2 class="welcome-text">Welcome Back! Let's Get You Signed In</h2>
+      <form method="POST" action="{% url 'login' %}"  class="form">
+        {% csrf_token %}
         <div class="form-gradient"></div>
         <section class="form-section">
           <div class="inputBox email-container">
-            <input
-              id="email"
-              type="email"
-              class="email-input"
-              required
-            />
+            <input id="email" type="email" class="email-input" name="email" required />
             <label for="email">Email* </label>
           </div>
-  
+
           <span class="result"></span>
-  
+
           <div class="password-container">
             <section class="inputBox password-container">
-              <input
-                id="password"
-                type="password"
-                class="password-input"
-                required
-                minlength="8"
-              />
+              <input id="password" type="password" class="password-input" name="password" required minlength="8" />
               <label for="password">Password* </label>
-              <img
-                src="./assets/icons/hide.svg"
-                alt="show/hide password"
-                class="toggle-password-icon"
-              />
+              <img src="{% static 'images/hide.svg' %}" alt="show/hide password" class="toggle-password-icon" />
             </section>
           </div>
-  
+
           <span class="error-message"></span>
-          <button type="submit" class="submit-btn">
-            Log In
-          </button>
+          <button type="submit" class="submit-btn">Log In</button>
         </section>
-     
       </form>
     </main>
-    <script type="module" src="./scripts/index.js"></script>
+
+    <section class="section innovation">
+      <div class="container">
+        <div class="content">
+          <h2>Innovation at the Heart of Security</h2>
+          <p>
+            We leverage artificial intelligence and machine learning to predict and prevent threats before they strike. Our proactive approach to cybersecurity ensures you're always one step ahead of potential risks.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section call-to-action">
+      <div class="container">
+        <div class="content">
+          <h2>Join Us in Shaping the Future of Cybersecurity</h2>
+          <p>
+            Ready to take your security to the next level? Start your journey with a free trial or schedule a demo today to experience the power of our platform. Together, we can build a safer digital future.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>Anamo Inc.</p>
+      <span>Copyright &copy; 2024. All Rights Reserved</span>
+    </footer>
+    <script type="module" src="{% static 'js/index.js' %}"></script>
   </body>
 </html>

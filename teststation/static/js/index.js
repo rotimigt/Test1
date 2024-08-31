@@ -8,6 +8,21 @@ const passwordInput = document.querySelector('.password-input');
 const errorMsg = document.querySelector('.error-message');
 const btnMenu = document.getElementsByClassName("btn-menu");
 const body = document.body
+const sections = document.querySelectorAll('section');
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, {
+    threshold: 0.4
+});
+
+sections.forEach(section => {
+    observer.observe(section);
+});
 
 // Function to validate input and update result
 function validate() {
@@ -28,42 +43,21 @@ function validate() {
 function togglePasswordVisibility() {
 
     if (passwordInput.type === 'password') {
-        togglePassword.setAttribute('src', "./assets/icons/view.svg")
+
+        togglePassword.setAttribute('src', "/static/images/view.svg")
         passwordInput.type = 'text';
         togglePassword.title = 'Show Password'; // Update title
     }
 
     else {
         passwordInput.type = 'password';
-        togglePassword.setAttribute('src', "./assets/icons/hide.svg")
+        togglePassword.setAttribute('src', "../../static/images/hide.svg")
         togglePassword.title = 'Hide Password'; // Update title
     }
 }
 
-function handleSubmit(e) {
-    e.preventDefault();
-    const emailInput = email.value
-    const password = passwordInput.value;
 
-    if (!_.validateEmail(emailInput)) {
-        result.textContent = 'Please enter a valid email.';
-        result.style.color = '#e59e9e';
-        return false;
-    }
-
-    const passwordFeedback = _.validatePassword(password)
-
-    if (passwordFeedback.length > 0) { 
-        errorMsg.textContent = `${passwordFeedback[0]}`;
-        errorMsg.style.color = '#e59e9e';
-        return false;
-    }
-
-    console.log('successful')
-    //Once form has been validated , then submit
-}
-
-function clearError() { 
+function clearError() {
     errorMsg.textContent = ''
 }
 
@@ -85,5 +79,4 @@ togglePassword.addEventListener('click', togglePasswordVisibility);
 
 
 //Submit form
-form.addEventListener('submit', handleSubmit)
-passwordInput.addEventListener('input',clearError)
+passwordInput.addEventListener('input', clearError)

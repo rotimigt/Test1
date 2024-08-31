@@ -13,4 +13,3 @@ class ScheduleSerializer(serializers.ModelSerializer):
         return obj.task
         
     
-    

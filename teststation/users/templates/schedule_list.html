@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule List</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/schedule_list.css' %}">
+</head>
+<body>
+    <header class="header">
+        <img src="{% static 'images/main-logo-1.png' %}" alt="logo" class="home-logo" />
+        <button class="btn-menu" type="button">
+          <i class="btn-menu__bars" aria-hidden="true"></i>
+        </button>
+        <nav class="navbar">
+          <ul class="nav-links">
+            <li><a href="#">Solutions</a></li>
+            <li><a href="#">Resources</a></li>
+            <li><a href="#">Company</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
+        </nav>
+      </header>
+    <main class="main">
+        <h2 class="title">Your Schedule at a Glance!</h2>
+        <div class="table-container">
+            <table class="responsive-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Task</th>
+                        <th>Date Created</th>
+                    </tr>
+                </thead>
+               <tbody>
+    {% for schedule in schedules %}
+    <tr>
+        <td>{{ schedule.name }}</td>
+        <td>{{ schedule.descriptions }}</td>
+        <td>
+          
+            <ul class="stylish-list">
+                {% for task in schedule.task %}
+                    {% for key, value in task.items %}
+                        <li>{{ key|capfirst }}: {{ value }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </td>
+        <td>{{ schedule.created }}</td>
+    </tr>
+    {% endfor %}
+</tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>
